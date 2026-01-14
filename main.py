@@ -7,7 +7,7 @@ import numpy as np
 axes = [5, 5, 5]
 
 # Create Data
-data = np.ones(axes, dtype=np.bool)
+data = np.ones(axes, dtype=bool)
 
 # Controll Tranperency
 alpha = 0.9
