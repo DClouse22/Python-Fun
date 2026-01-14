@@ -28,3 +28,5 @@ ax = fig.add_subplot(111, projection='3d')
 # Voxels is used to customizations of
 # the sizes, positions and colors.
 ax.voxels(data, facecolors=colors, edgecolors='grey')
+
+plt.show()
