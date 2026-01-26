@@ -2,17 +2,28 @@ import streamlit as st
 from datetime import datetime
 import time
 
-st.title("⏰ Countdown Timer")
+st.title("🎄 Christmas Countdown")
 
-# Let user pick a target date and time
-col1, col2 = st.columns(2)
-with col1:
-    target_date = st.date_input("Target Date", value=datetime(2025, 12, 25))
-with col2:
-    target_time = st.time_input("Target Time", value=datetime.strptime("10:00", "%H:%M").time())
+# Get current year
+current_year = datetime.now().year
 
-# Combine date and time
-target_datetime = datetime.combine(target_date, target_time)
+# Let user select this year or next year
+year_option = st.radio(
+    "Select Christmas Year:",
+    options=["This Year", "Next Year"],
+    horizontal=True
+)
+
+# Determine the target year based on selection
+if year_option == "This Year":
+    target_year = current_year
+else:
+    target_year = current_year + 1
+
+# Set target to Christmas Day at midnight
+target_datetime = datetime(target_year, 12, 25, 0, 0, 0)
+
+st.write(f"**Counting down to:** December 25, {target_year}")
 
 # Placeholder for the countdown display
 countdown_placeholder = st.empty()
@@ -41,5 +52,6 @@ if st.button("Start Countdown"):
             )
             time.sleep(1)
         
-        countdown_placeholder.markdown("## 🎉 Done!")
+        countdown_placeholder.markdown("## 🎄🎅 Merry Christmas! 🎁🎉")
         st.balloons()
+        st.snow()
