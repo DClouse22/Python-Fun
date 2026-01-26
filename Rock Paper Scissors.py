@@ -10,6 +10,8 @@ if 'losses' not in st.session_state:
     st.session_state.losses = 0
 if 'ties' not in st.session_state:
     st.session_state.ties = 0
+if 'last_result' not in st.session_state:
+    st.session_state.last_result = None
 
 # Display scoreboard
 col1, col2, col3 = st.columns(3)
@@ -66,37 +68,54 @@ elif scissors:
 # Game logic
 if user_choice:
     computer_choice = random.choice(['scissors', 'rock', 'paper'])
-    
-    # Display choices with large icons
+
+    # Determine winner
+    if computer_choice == user_choice:
+        result = 'tie'
+        st.session_state.ties += 1
+    elif (user_choice == 'rock' and computer_choice == 'scissors' or
+          user_choice == 'paper' and computer_choice == 'rock' or
+          user_choice == 'scissors' and computer_choice == 'paper'):
+        result = 'win'
+        st.session_state.wins += 1
+    else:
+        result = 'lose'
+        st.session_state.losses += 1
+
+    # Store result in session state
+    st.session_state.last_result = {
+        'user': user_choice,
+        'computer': computer_choice,
+        'result': result
+    }
+    st.rerun()
+
+# Display last result if available
+if st.session_state.last_result:
     choice_emoji = {'rock': '🪨', 'paper': '📄', 'scissors': '✂️'}
+    last = st.session_state.last_result
 
     st.subheader("Results:")
     rcol1, rcol2 = st.columns(2)
     with rcol1:
-        st.markdown(f'<div class="game-icon">{choice_emoji[user_choice]}</div>', unsafe_allow_html=True)
-        st.markdown(f'<p class="choice-label">You chose: {user_choice.title()}</p>', unsafe_allow_html=True)
+        st.markdown(f'<div class="game-icon">{choice_emoji[last["user"]]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<p class="choice-label">You chose: {last["user"].title()}</p>', unsafe_allow_html=True)
     with rcol2:
-        st.markdown(f'<div class="game-icon">{choice_emoji[computer_choice]}</div>', unsafe_allow_html=True)
-        st.markdown(f'<p class="choice-label">Computer chose: {computer_choice.title()}</p>', unsafe_allow_html=True)
-    
-    # Determine winner
-    if computer_choice == user_choice:
+        st.markdown(f'<div class="game-icon">{choice_emoji[last["computer"]]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<p class="choice-label">Computer chose: {last["computer"].title()}</p>', unsafe_allow_html=True)
+
+    # Show result message
+    if last['result'] == 'tie':
         st.info("🤝 It's a Tie!")
-        st.session_state.ties += 1
-    elif (user_choice == 'rock' and computer_choice == 'scissors' or 
-          user_choice == 'paper' and computer_choice == 'rock' or 
-          user_choice == 'scissors' and computer_choice == 'paper'):
+    elif last['result'] == 'win':
         st.success("🎉 You Win!")
-        st.session_state.wins += 1
     else:
         st.error("😢 You Lose!")
-        st.session_state.losses += 1
-    
-    st.rerun()
 
 # Reset button
 if st.button("Reset Score"):
     st.session_state.wins = 0
     st.session_state.losses = 0
     st.session_state.ties = 0
+    st.session_state.last_result = None
     st.rerun()
