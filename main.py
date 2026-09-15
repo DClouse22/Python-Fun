@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import streamlit as st
 
 # Create axis
 axes = [5, 5, 5]
@@ -30,4 +31,4 @@ ax = fig.add_subplot(111, projection='3d')
 ax.voxels(data, facecolors=colors, edgecolors='grey')
 
 #plt.show()
-plt.pyplot(fig)
+st.pyplot(fig)
