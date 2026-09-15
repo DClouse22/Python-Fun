@@ -29,4 +29,5 @@ ax = fig.add_subplot(111, projection='3d')
 # the sizes, positions and colors.
 ax.voxels(data, facecolors=colors, edgecolors='grey')
 
-plt.show()
+#plt.show()
+st.pyplot(fig)
