@@ -30,4 +30,4 @@ ax = fig.add_subplot(111, projection='3d')
 ax.voxels(data, facecolors=colors, edgecolors='grey')
 
 #plt.show()
-st.pyplot(fig)
+plt.pyplot(fig)
